@@ -13,7 +13,7 @@
   source0=layout.license source1=page.license -%}
 {%- assign _license = __return -%}
 
-<footer class="article__footer ">
+<footer class="article__footer">
   {%- if page.modify_date -%}
     {%- include snippets/get-locale-string.html key='ARTICLE_DATE_FORMAT' -%}
     {%- assign _locale_date_format = __return -%}
@@ -53,3 +53,15 @@
     <div class="article__license">{%- include article/footer/license.html license=_license_data -%}</div>
   {%- endif -%}
 </footer>
+
+<script>
+
+{% include scripts/programmingLanguageSwitcherScalaPython.js %}
+
+</script>
+
+
+<style>
+  {% include scripts/code-block-styling.css %}
+
+</style>

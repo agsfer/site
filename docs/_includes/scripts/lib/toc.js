@@ -1,11 +1,12 @@
-// https://github.com/nghuuphuoc/tocjs/blob/master/src/js/toc.js
 (function() {
   var SOURCES = window.TEXT_VARIABLES.sources;
   window.Lazyload.js(SOURCES.jquery, function() {
     function toc(options) {
       var $root = this, $window = $(window), $scrollTarget, $scroller, $tocUl = $('<ul class="toc toc--ellipsis"></ul>'), $tocLi, $headings, $activeLast, $activeCur,
-        selectors = 'h1,h2,h3', container = 'body', scrollTarget = window, scroller = 'html, body', disabled = false,
+        selectors = 'h1,h2,h3',  container = 'body', scrollTarget = window, scroller = 'html, body', disabled = false,
         headingsPos, scrolling = false, hasRendered = false, hasInit = false;
+
+        
 
       function setOptions(options) {
         var _options = options || {};
@@ -47,8 +48,8 @@
           $root.append($tocUl);
           $headings.each(function() {
             var $this = $(this);
-            $tocUl.append($('<li style="white-space: normal !important;" ></li>').addClass('toc-' + $this.prop('tagName').toLowerCase() + ' ' + $this.prop('className'))
-            .css("white-space", "normal !important")
+            $tocUl.append($('<li></li>').addClass('toc-' + $this.prop('tagName')
+              .toLowerCase() + ' ' + $this.prop('className'))
               .append($('<a></a>').text($this.text()).attr('href', '#' + $this.prop('id'))));
           });
           $tocLi = $tocUl.children('li');

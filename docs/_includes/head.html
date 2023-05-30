@@ -2,18 +2,32 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
 
+<!-- Google Tag Manager MAIN -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-59JLR64');</script>
+<!-- End Google Tag Manager -->
+
+{%- include snippets/get-article-pagetitle.html article=page -%}
+{%- assign _article_pagetitle = __return -%}
+
 {%- if page.layout == "landing" -%}
-<title>John Snow Labs - NLU</title>
-{%- else -%}
-{%- include snippets/get-article-seotitle.html article=page -%}
+<title>John Snow Labs - State of the Art NLP in Python</title>
+{%- elsif _pagetitle -%}
 <title>{%- if __return -%}{{ __return }}{%- endif -%}</title>
 {%- else -%}
 {%- include snippets/get-article-title.html article=page -%}
-<title>{%- if __return -%}{{ __return }} - {{ site.title }}{%- else -%}{{ site.title }}{%- endif -%}</title>
+<title>{%- if __return -%}{{ __return }}{%- endif -%}</title>
 {%- endif -%}
 
-<meta name="description" content="{%- if page.excerpt -%}{{ page.excerpt | strip_html | strip_newlines | strip | truncate: 160 }}{%- else -%}{{ site.description }}{%- endif -%}">
-<link rel="canonical" href="{%- include snippets/page-url.html -%}">
+{%- include snippets/get-article-seotitle.html article=page -%}
+<meta property="og:title" content="{%- if __return -%}{{ __return }}{%- endif -%}"/>
+
+<meta name="description" content="{%- if page.excerpt -%}{{ page.excerpt | strip_html | strip_newlines | strip | truncate: 320 }}{%- else -%}{{ site.description }}{%- endif -%}">
+<!-- <link rel="canonical" href="{%- include snippets/page-url.html -%}"> -->
+<link rel="canonical" href="{{ site.url }}{{ page.url | replace:'index.html',''}}">
 
 {%- assign _paths_rss = site.paths.rss | default: site.data.variables.default.paths.rss -%}
 {%- include snippets/get-nav-url.html path=_paths_rss -%}
@@ -27,5 +41,5 @@
 {%- include snippets/get-sources.html -%}
 {%- assign _sources = __return -%}
 <link rel="stylesheet" href="{{ _sources.font_awesome }}" >
-
+<link rel="stylesheet" href="/static/models.css" />
 {%- include head/custom.html -%}

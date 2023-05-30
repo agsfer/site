@@ -27,22 +27,26 @@ default:
       show_readmore: false
       show_info: false
     show_title: true
+    show_subtitle: true
     show_edit_on_github: false
     show_date: true
     show_tags: true
     show_author_profile: false
     show_subscribe: false
     full_width: false
+    show_nav: false
     sharing: false
     comment: true
+    demomenu: false
     license: false
     pageview: false
     search: default
+  
 
 sources:
   bootcdn:
     font_awesome: 'https://use.fontawesome.com/releases/v5.0.13/css/all.css'
-    jquery: 'https://cdn.bootcss.com/jquery/3.1.1/jquery.min.js'
+    jquery: 'https://code.jquery.com/jquery-3.1.1.min.js'
     leancloud_js_sdk: '//cdn1.lncld.net/static/js/3.4.1/av-min.js'
     chart: 'https://cdn.bootcss.com/Chart.js/2.7.2/Chart.bundle.min.js'
     gitalk:

@@ -10,6 +10,11 @@ layout: base
 {%- assign _header = __return -%}
 
 {%- include snippets/assign.html
+  target = site.data.variables.default.page.demomenu
+  source0=layout.demomenu source1=page.demomenu -%}
+{%- assign _demomenu = __return -%}
+
+{%- include snippets/assign.html
   target=layout.footer source0=page.footer -%}
 {%- assign _footer = __return -%}
 
@@ -35,7 +40,7 @@ layout: base
   <div class="page__mask d-print-none js-page-mask js-sidebar-hide"></div>
   <div class="page__viewport">
     <div class="page__actions d-print-none">
-      <div class="button button--circle button--lg box-shadow-2 sidebar-button js-sidebar-show">
+      <div class="js-sidebar-show">
         <i class="fas fa-bars icon--show"></i>
       </div>
     </div>
@@ -47,12 +52,15 @@ layout: base
       </div>
 
 {%- else -%}
-<div class="layout--page js-page-root {%- if page.aside -%}&nbsp; layout--page--aside{%- endif -%}">
+<div class="layout--page js-page-root  {%- if page.aside -%}&nbsp; layout--page--aside{%- endif -%}">
 {%- endif -%}
 
     {%- assign _page_main_class = 'page__main js-page-main' -%}
     {%- if _page_mode == 'immersive' -%}
       {%- assign _page_main_class = _page_main_class | append: ' page__main--immersive' -%}
+    {%- endif -%}
+    {%- if _page_mode == 'immersivebg' -%}
+      {%- assign _page_main_class = _page_main_class | append: ' page__main--immersive_bg' -%}
     {%- endif -%}
     {%- unless page.sidebar -%}
       {%- assign _page_main_class = _page_main_class | append: ' page__viewport' -%}
@@ -82,7 +90,12 @@ layout: base
       {%- endif -%}
 
 
-        <div class="page__content">
+        <div class="page__content {% if _demomenu != false %} demopage_content{% endif %}">
+
+          {%- if _demomenu != false -%}
+            {%- include demomenu.html -%}
+          {%- endif -%}
+            
         {%- if _article_header_type == 'overlay' or _article_header_type == 'cover' -%}
 
           {%- if _article_header_type == 'overlay' -%}
@@ -183,9 +196,9 @@ layout: base
         {%- endif -%}
             <div class="grid grid--reverse">
 
-              <div class="col-aside d-print-none js-col-aside" style="margin-left:100%; width=280px;">
+              <div class="col-aside d-print-none js-col-aside">
                 {%- if page.aside -%}
-                  <aside class="page__aside js-page-aside" style="white-space: normal !important;">
+                  <aside class="page__aside js-page-aside">
                     {%- include aside/toc.html -%}
                   </aside>
                 {%- endif -%}
@@ -233,6 +246,77 @@ layout: base
   </div> {%- comment -%} end page__viewport {%- endcomment -%}
 {%- endif -%}
 
+
+{%- for _section in page.data.sections -%}
+{%- if _section.articles -%}
+  {%- assign _size = _section.articles | size  -%}
+  <div class="grid--container container-aside">
+    <div class="grid">
+
+      {%- for child in _section.articles -%}          
+
+      {%- if _size >= 2 -%}
+      {%- assign _cell_md_col = 3 -%}
+      {%- else -%}
+      {%- assign _cell_md_col = 12 | divided_by: _size -%}
+      {%- endif -%}
+
+      {%- if _size >= 4 -%}
+      {%- assign _cell_lg_col = 3 -%}
+      {%- else -%}
+      {%- assign _cell_lg_col = 12 | divided_by: _size -%}
+      {%- endif -%}
+
+      {%- if _size >= 6 -%}
+      {%- assign _cell_lg_col = 2 -%}
+      {%- else -%}
+      {%- assign _cell_lg_col = 12 | divided_by: _size -%}
+      {%- endif -%}
+
+      <div class="cell cell--6 cell--md-{{ _cell_md_col }} cell--lg-{{ _cell_lg_col }} ">
+
+        <div class="article-item">
+          {%- if child.image and child.image.src -%}
+
+          {%- if child.image.url -%}
+          {%- include snippets/get-nav-url.html path=child.image.url -%}
+          {%- assign _item_image_url = __return -%}
+          {%- else -%}
+          {%- assign _item_image_url = nil -%}
+          {%- endif -%}
+
+          {%- include snippets/get-nav-url.html path=child.image.src -%}
+          {%- assign _item_image_src = __return -%}
+
+          {%- if child.image.is_row -%}
+            {%- endif -%}
+            <figure class="mx-auto" style="{{ child.image.style }}">
+              <img src="{{ _item_image_src }}" />
+            </figure>
+            {%- if child.image.is_row -%}
+          {%- endif -%}
+          {%- endif -%}
+
+          <h4>{{ child.title }}</h4>
+
+          {%- if child.excerpt-%}
+          <div class="video-descr">{{ child.excerpt }}</div>
+          {%- endif -%}
+
+        </div>              
+
+        {%- if child.content-%}
+        <p>{{ child.content }}</p>
+        {%- endif -%}
+
+      </div>
+      {%- endfor-%}
+
+    </div>
+  </div>
+  {%- endif -%}
+{%- endfor-%}
+
 <script>{%- include scripts/lib/modal.js -%}</script>
 {%- if _lightbox == true -%}
   <div class="modal d-print-none js-page-gallery-modal"><div class="gallery"></div></div>
@@ -268,4 +352,3 @@ layout: base
 
 {%- include markdown-enhancements.html -%}
 {%- include pageview.html -%}
-
